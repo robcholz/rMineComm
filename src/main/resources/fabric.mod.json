@@ -1,0 +1,40 @@
+{
+	"schemaVersion": 1,
+	"id": "rminecomm",
+	"version": "${version}",
+	"name": "rMineComm",
+	"environment": "client",
+	"description": "The ultimate Minecraft mod that bridges the gap between the game and the real world, allowing for seamless connectivity with external devices via Serial Port, MQTT Protocol, and Bluetooth.",
+	"authors": [
+		"robcholz"
+	],
+	"contact": {
+		"homepage": "https://github.com/robcholz/rMineComm",
+		"issues": "https://github.com/robcholz/rMineComm/issues",
+		"sources": "https://github.com/robcholz/rMineComm"
+	},
+	"license": "GPL-3.0-only",
+	"icon": "assets/rminecomm/icon.png",
+	"entrypoints": {
+		"main": [
+			"robcholz.RMineComm"
+		]
+	},
+	"mixins": [
+		"rminecomm.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.14.23",
+		"minecraft": "~1.15.2",
+		"java": ">=8",
+		"fabric": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	},
+	"custom": {
+		"rminecomm": {
+			"update_checker": true
+		}
+	}
+}
