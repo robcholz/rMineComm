@@ -4,9 +4,16 @@
 	"version": "${version}",
 	"name": "rMineComm",
 	"environment": "client",
-	"description": "The ultimate Minecraft mod that bridges the gap between the game and the real world, allowing for seamless connectivity with external devices via Serial Port, MQTT Protocol, and Bluetooth.",
+	"description": "The ultimate Minecraft mod that bridges the gap between the game and the real world, allowing for seamless connectivity with external devices via Serial Port, MQTT, and Bluetooth.",
 	"authors": [
-		"robcholz"
+		{
+			"name": "robcholz",
+			"homepage": "https://robcholz.github.io"
+		},
+		{
+			"name": "oce@412",
+			"homepage": "https://www.youtube.com/@oce412"
+		}
 	],
 	"contact": {
 		"homepage": "https://github.com/robcholz/rMineComm",
