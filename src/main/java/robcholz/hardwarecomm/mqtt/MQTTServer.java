@@ -11,7 +11,6 @@ import io.netty.handler.codec.mqtt.MqttQoS;
 import net.minecraft.util.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import robcholz.hardwarecomm.comm.Status;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -49,6 +48,11 @@ public class MQTTServer implements MQTTServerInterface {
     @Override
     public Server getServer () {
         return this.server;
+    }
+
+    @Override
+    public String getURL(){
+        return ""; // TODO
     }
 
     @Override

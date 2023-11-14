@@ -1,5 +1,7 @@
 package robcholz.hardwarecomm.comm;
 
+import robcholz.hardwarecomm.device.CommDeviceInterface;
+
 import java.io.IOException;
 
 public class DeviceException {
@@ -10,6 +12,18 @@ public class DeviceException {
         }
 
         public DeviceUnopenedException (CommDeviceInterface device, String reason) {
+            super(reason + " on " + device.getName());
+            Comm.println(reason + " on " + device.getName());
+        }
+    }
+
+    public static class DeviceInUseException extends IOException {
+        public DeviceInUseException (CommDeviceInterface device) {
+            super("Device in use on " + device.getName());
+            Comm.println("Device in use on " + device.getName());
+        }
+
+        public DeviceInUseException (CommDeviceInterface device, String reason) {
             super(reason + " on " + device.getName());
             Comm.println(reason + " on " + device.getName());
         }

@@ -12,6 +12,8 @@ public interface MQTTServerInterface {
 
     Server getServer ();
 
+    String getURL();
+
     void addMessage (String message, int status);
 
     Pair<String, Integer> getMessage ();

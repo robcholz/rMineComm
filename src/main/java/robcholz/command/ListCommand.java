@@ -9,9 +9,13 @@ import net.minecraft.text.LiteralText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import robcholz.monitor.BlockStateMonitor;
-import robcholz.monitor.MonitoredBlockState;
+import robcholz.hardwarecomm.device.AbstractCommDevice;
+import robcholz.hardwarecomm.device.CommDeviceInterface;
+import robcholz.manager.CommBlockManager;
+import robcholz.manager.CommDeviceManager;
+import robcholz.state.CommBlockInterface;
 
+import java.util.List;
 import java.util.Set;
 
 public class ListCommand {
@@ -26,16 +30,26 @@ public class ListCommand {
     }
 
     private static int showDeviceList (CommandContext<ServerCommandSource> context) {
+        Set<AbstractCommDevice> devices = CommDeviceManager.getInstance().getMarkedElements();
+        Text text = new LiteralText("Added Devices:\n").setStyle(new Style().setColor(Formatting.GRAY));
+        int count = 1;
+        for (CommDeviceInterface device : devices) {
+            text.append(new LiteralText(String.format("%d. ", count++)))
+                    .append(new LiteralText(device.getName()).setStyle(new Style().setItalic(true)))
+                    .append(" ")
+                    .append(new LiteralText(device.getID()).setStyle(new Style().setColor(Formatting.GRAY))).append("\n");
+        }
+        context.getSource().sendFeedback(text, false);
         return 1;
     }
 
     private static int showPosList (CommandContext<ServerCommandSource> context) {
-        Set<MonitoredBlockState> blockSet = BlockStateMonitor.getInstance().getMonitoredBlocks();
+        Set<CommBlockInterface> blockSet = CommBlockManager.getInstance().getMarkedElements();
         Text text = new LiteralText("Marked Position at:\n").setStyle(new Style().setColor(Formatting.GRAY));
         int count = 1;
-        for (MonitoredBlockState state : blockSet) {
+        for (CommBlockInterface state : blockSet) {
             Text blockTypeText = new LiteralText(state.getBlockType().toString()).setStyle(new Style().setItalic(true));
-            text.append(new LiteralText(String.format("  %d. %s ", count++, state.getBlockName().asFormattedString())))
+            text.append(new LiteralText(String.format("  %d. %s ", count++, state.getName())))
                     .append(blockTypeText)
                     .append(new LiteralText(String.format(" at [%d,%d,%d] %d\n",
                             state.getBlockPos().getX(),
@@ -49,6 +63,16 @@ public class ListCommand {
     }
 
     private static int showConnectionList (CommandContext<ServerCommandSource> context) {
+        List<AbstractCommDevice> connections = CommDeviceManager.getInstance().getConnectionList();
+        Text text = new LiteralText("Established Connections:\n").setStyle(new Style().setColor(Formatting.GRAY));
+        int count = 1;
+        for (AbstractCommDevice connection : connections) {
+            text.append(new LiteralText(String.format("%d. ", count++)))
+                    .append(new LiteralText(connection.getName()).setStyle(new Style().setItalic(true)))
+                    .append(" ")
+                    .append(new LiteralText(connection.getID()).setStyle(new Style().setColor(Formatting.GRAY))).append("\n");
+        }
+        context.getSource().sendFeedback(text, false);
         return 1;
     }
 }

@@ -2,17 +2,17 @@ package robcholz.hardwarecomm.mqtt;
 
 import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
-import robcholz.hardwarecomm.comm.AbstractCommDevice;
-import robcholz.hardwarecomm.comm.CommDeviceInterface;
 import robcholz.hardwarecomm.comm.DeviceException;
-
-import java.util.LinkedList;
-import java.util.Queue;
+import robcholz.hardwarecomm.device.AbstractCommDevice;
+import robcholz.hardwarecomm.device.CommDeviceInterface;
 
 /**
  * @mqtt send: {clientID}/topic receive: {clientID}/topic/response
  */
 public class MQTTDevice extends AbstractCommDevice implements CommDeviceInterface {
+    private String topic;
+    private String responseTopic;
+    private String clientID;
     private final String brokerURL;
     private final MemoryPersistence memoryPersistence;
     private final MqttConnectOptions connectOptions;
@@ -20,13 +20,13 @@ public class MQTTDevice extends AbstractCommDevice implements CommDeviceInterfac
     public final int DEFAULT_QOS = 0;
     private int qos;
 
-    public MQTTDevice (String clientID, String brokerURL) {
+    public MQTTDevice (String name,String ID, String brokerURL) {
+        super(name, ID); // name is clientID
         this.brokerURL = brokerURL;
         this.memoryPersistence = new MemoryPersistence();
         this.connectOptions = new MqttConnectOptions();
         this.connectOptions.setCleanSession(true);
-        setClientID(clientID);
-        setName(clientID);
+        setClientID(ID);
         setQos(DEFAULT_QOS);
         setTopic(clientID + "/topic");
         setSentSuccessfullyFlag(false);
@@ -40,9 +40,30 @@ public class MQTTDevice extends AbstractCommDevice implements CommDeviceInterfac
 
     public String getBrokerURL () {return this.brokerURL;}
 
+    private void setTopic (String topic) {
+        this.topic = topic + "/topic";
+        this.responseTopic = this.topic + "/response";
+    }
+
+    private void setClientID (String clientID) {
+        this.clientID = clientID;
+    }
+
+    private String getTopic () {
+        return topic;
+    }
+
+    private String getResponseTopic () {
+        return responseTopic;
+    }
+
+    private String getClientID () {
+        return clientID;
+    }
+
     @Override
-    public boolean isAvailable () {
-        return this.mqttClient.isConnected();
+    public int getDeviceType () {
+        return CommDeviceInterface.MQTT_DEVICE;
     }
 
     @Override
@@ -94,10 +115,5 @@ public class MQTTDevice extends AbstractCommDevice implements CommDeviceInterfac
     }
 
     @Override
-    public String read () {
-        if (!isMessageBufferEmpty()) {
-            return getMessage();
-        }
-        return "";
-    }
+    public void onUpdate () {}
 }

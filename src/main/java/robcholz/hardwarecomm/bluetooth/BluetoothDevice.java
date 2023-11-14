@@ -1,12 +1,17 @@
 package robcholz.hardwarecomm.bluetooth;
 
-import robcholz.hardwarecomm.comm.AbstractCommDevice;
+import robcholz.hardwarecomm.device.AbstractCommDevice;
+import robcholz.hardwarecomm.device.CommDeviceInterface;
 import robcholz.hardwarecomm.comm.DeviceException;
 
 public class BluetoothDevice extends AbstractCommDevice {
+    public BluetoothDevice (String name, String ID) {
+        super(name, ID);
+    }
+
     @Override
-    public boolean isAvailable () {
-        return false;
+    public int getDeviceType () {
+        return CommDeviceInterface.BLUETOOTH_DEVICE;
     }
 
     @Override
@@ -25,7 +30,7 @@ public class BluetoothDevice extends AbstractCommDevice {
     }
 
     @Override
-    public String read () throws DeviceException.BadReadException {
-        return null;
+    public void onUpdate () {
+
     }
 }

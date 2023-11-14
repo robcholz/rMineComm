@@ -23,9 +23,8 @@
 	"license": "GPL-3.0-only",
 	"icon": "assets/rminecomm/icon.png",
 	"entrypoints": {
-		"main": [
-			"robcholz.RMineComm"
-		]
+		"main": [ "robcholz.RMineComm" ],
+		"modmenu": [ "robcholz.compat.ModMenuImpl" ]
 	},
 	"mixins": [
 		"rminecomm.mixins.json"

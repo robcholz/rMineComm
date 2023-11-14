@@ -1,15 +1,15 @@
 package robcholz.hardwarecomm.serial;
 
 import purejavacomm.*;
-import robcholz.hardwarecomm.comm.AbstractCommDevice;
 import robcholz.hardwarecomm.comm.DeviceException;
+import robcholz.hardwarecomm.device.AbstractCommDevice;
+import robcholz.hardwarecomm.device.CommDeviceInterface;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
 public class SerialDevice extends AbstractCommDevice {
-    private final String portName;
     public final int DEFAULT_BAUD_RATE = 9600;
     private int baudRate;
     private int dataBit;
@@ -20,10 +20,9 @@ public class SerialDevice extends AbstractCommDevice {
     private InputStream inputStream;
     private OutputStream outputStream;
 
-    public SerialDevice (String portName, String clientID) {
-        this.portName = portName;
-        setClientID(clientID);
-        setName(clientID);
+    public SerialDevice (String name, String port) {
+        super(name, port);
+        setName(name);
         setBaudRate(DEFAULT_BAUD_RATE);
         setParams(SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
     }
@@ -39,24 +38,21 @@ public class SerialDevice extends AbstractCommDevice {
     }
 
     @Override
-    public boolean isAvailable () {
-        try {
-            return inputStream.available() != 0;
-        } catch (IOException ignored) {}
-        return false;
+    public int getDeviceType () {
+        return CommDeviceInterface.SERIAL_DEVICE;
     }
 
     @Override
-    public void connect () throws DeviceException.DeviceUnopenedException, DeviceException.BadDeviceConfigException {
+    public void connect () throws DeviceException.DeviceUnopenedException, DeviceException.BadDeviceConfigException, DeviceException.DeviceInUseException {
         try {
-            CommPortIdentifier portIdentifier = CommPortIdentifier.getPortIdentifier(this.portName);
+            CommPortIdentifier portIdentifier = CommPortIdentifier.getPortIdentifier(getID());
             this.serialPort = (SerialPort) portIdentifier.open(getName(), 2000);
             this.inputStream = serialPort.getInputStream();
             this.outputStream = serialPort.getOutputStream();
         } catch (NoSuchPortException e) {
             throw new DeviceException.DeviceUnopenedException(this, "No such port");
         } catch (PortInUseException e) {
-            throw new DeviceException.DeviceUnopenedException(this, "Port is in use");
+            throw new DeviceException.DeviceInUseException(this, "Port is in use");
         } catch (IOException e) {
             throw new DeviceException.DeviceUnopenedException(this, e.getMessage());
         }
@@ -91,13 +87,13 @@ public class SerialDevice extends AbstractCommDevice {
     }
 
     @Override
-    public String read () throws DeviceException.BadReadException {
-        StringBuilder receivedData = new StringBuilder();
+    public void onUpdate () {
+        readToBuffer();
+    }
+
+    private void readToBuffer () {
         try {
-            receivedData.append(new String(buffer, 0, inputStream.read(buffer, 0, inputStream.available())));
-        } catch (IOException e) {
-            throw new DeviceException.BadReadException(this);
-        }
-        return receivedData.toString();
+            addMessage(new String(buffer, 0, inputStream.read(buffer, 0, inputStream.available())));
+        } catch (IOException ignored) {}
     }
 }

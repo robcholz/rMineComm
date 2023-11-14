@@ -1,0 +1,15 @@
+{
+  "itemGroup.rminecomm.group": "rMineComm",
+  "block.rminecomm.daylight_detector": "Daylight Detector",
+  "block.rminecomm.light_sensor": "Light Sensor",
+  "block.rminecomm.redstone_meter": "Redstone Meter",
+  "block.rminecomm.weather_sensor": "Weather Sensor",
+  "gui.rminecomm.connect": "Connect",
+  "gui.rminecomm.disconnect": "Disconnect",
+  "gui.rminecomm.add": "Add",
+  "gui.rminecomm.scan": "Scan",
+  "gui.rminecomm.next_page": "Next Page",
+  "gui.rminecomm.config_screen.title": "rMineComm-Devices",
+  "gui.rminecomm.config_screen.scanned_devices": "Scanned Devices",
+  "gui.rminecomm.config_screen.my_devices": "My Devices"
+}

@@ -1,9 +1,10 @@
 package robcholz.hardwarecomm.serial;
 
-import robcholz.hardwarecomm.comm.CommScannerInterface;
 import purejavacomm.CommPortIdentifier;
+import robcholz.hardwarecomm.scanner.CommScannerInterface;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 
@@ -15,10 +16,10 @@ public class SerialScanner implements CommScannerInterface<SerialDevice> {
         int index = 0;
         while (portEnum.hasMoreElements()) {
             CommPortIdentifier port = portEnum.nextElement();
-            SerialDevice device = new SerialDevice(port.getName(), "scanner" + index);
+            SerialDevice device = new SerialDevice("usb_scanner" + index, port.getName());
             deviceList.add(device);
             index++;
         }
-        return deviceList;
+        return Collections.unmodifiableList(deviceList);
     }
 }

@@ -9,7 +9,7 @@ import net.minecraft.util.math.BlockPos;
 
 
 public class Command {
-    public static LiteralCommandNode register(CommandDispatcher<ServerCommandSource> dispatcher,boolean dedicated){
+    public static LiteralCommandNode register(CommandDispatcher<ServerCommandSource> dispatcher,boolean dedicated) {
         BlockCommand.register(dispatcher);
         DeviceCommand.register(dispatcher);
         ScanCommand.register(dispatcher);
@@ -17,13 +17,5 @@ public class Command {
         ListCommand.register(dispatcher);
         BindCommand.register(dispatcher);
         return ConnectCommand.register(dispatcher);
-    }
-
-    public static BlockPos getBlockPos(CommandContext<ServerCommandSource> context){
-        return new BlockPos(
-                IntegerArgumentType.getInteger(context, "x"),
-                IntegerArgumentType.getInteger(context, "y"),
-                IntegerArgumentType.getInteger(context, "z")
-        );
     }
 }
